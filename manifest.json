@@ -2,34 +2,25 @@
   "name": "SEN RIGOLE SMART",
   "short_name": "SenRigole",
   "description": "Système intelligent de surveillance des rigoles au Sénégal",
-  "start_url": "/",
+  "start_url": "/sen-rigole-smart/",
+  "scope": "/sen-rigole-smart/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "orientation": "portrait-primary",
+  "id": "/sen-rigole-smart/",
   "icons": [
     {
       "src": "https://i.imgur.com/BrPQrgw.jpeg",
-      "sizes": "192x192",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "https://i.imgur.com/BrPQrgw.jpeg",
       "sizes": "512x512",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
-    }
-  ],
-  "categories": ["utilities", "government", "productivity"],
-  "lang": "fr-SN",
-  "dir": "ltr",
-  "screenshots": [
-    {
-      "src": "https://i.imgur.com/BrPQrgw.jpeg",
-      "sizes": "1280x720",
-      "type": "image/jpeg",
-      "label": "Vue principale de SEN RIGOLE SMART"
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
