@@ -3,286 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SEN RIGOLE SMART - Système intelligent de surveillance des rigoles">
+    <meta name="description" content="SEN RIGOLE SMART - Système intelligent">
     <meta name="theme-color" content="#2563eb">
     <title>SEN RIGOLE SMART</title>
-    
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="https://i.imgur.com/o973aKH.png">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
     <style>
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-        }
-        .install-banner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #2563eb 0%, #059669 100%);
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
-            z-index: 1000;
-            display: none;
-        }
-        .install-banner.show {
-            display: block;
-        }
+        body { margin: 0; font-family: system-ui, sans-serif; }
+        .rigole-card { transition: all 0.3s; cursor: pointer; }
+        .rigole-card:hover { transform: scale(1.02); }
+        .status-critique { background-color: #fee2e2; border-left: 4px solid #ef4444; }
+        .status-attention { background-color: #fed7aa; border-left: 4px solid #f97316; }
+        .status-normal { background-color: #d1fae5; border-left: 4px solid #10b981; }
     </style>
 </head>
-<body>
-    <div id="root"></div>
+<body class="bg-gradient-to-br from-blue-50 to-green-50">
     
-    <div id="installBanner" class="install-banner">
-        <p class="mb-2 font-semibold">📱 Installer SEN RIGOLE SMART</p>
-        <button id="installBtn" class="bg-white text-blue-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 transition">
-            Installer
-        </button>
-        <button id="dismissBtn" class="ml-4 text-white underline">
-            Plus tard
-        </button>
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-green-600 text-white p-6 shadow-lg">
+        <div class="max-w-7xl mx-auto flex items-center gap-6">
+            <img src="https://i.imgur.com/o973aKH.png" alt="Logo" class="w-20 h-20 rounded-lg">
+            <div class="flex-1">
+                <h1 class="text-3xl font-bold">SEN RIGOLE SMART</h1>
+                <p class="text-blue-100">35 rigoles - Dakar & Guédiawaye</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Vue Toggle -->
+    <div class="max-w-7xl mx-auto px-6 py-4">
+        <div class="flex gap-4 bg-white p-2 rounded-lg shadow inline-flex">
+            <button onclick="showCitizen()" id="btnCitizen" class="px-6 py-2 rounded-md font-semibold bg-blue-600 text-white">
+                👤 Vue Citoyen
+            </button>
+            <button onclick="showAuthority()" id="btnAuthority" class="px-6 py-2 rounded-md font-semibold bg-gray-100 text-gray-600">
+                🏛️ Vue Autorités
+            </button>
+        </div>
     </div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { AlertCircle, Droplets, MapPin, Bell, Gauge, Navigation } = lucide;
-        
-        const SenRigoleApp = () => {
-            const [userType, setUserType] = useState('citizen');
-            const [selectedRigole, setSelectedRigole] = useState(null);
-            const [notifications, setNotifications] = useState([]);
-            const [mapView, setMapView] = useState('list');
+    <!-- Vue Citoyen -->
+    <div id="viewCitizen" class="max-w-7xl mx-auto px-6 pb-20">
+        <div class="space-y-6">
+            
+            <!-- Alertes -->
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg shadow">
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">🔔</span>
+                    <div>
+                        <h3 class="font-semibold text-yellow-900 mb-2">Alertes dans votre zone</h3>
+                        <div class="text-sm text-yellow-800">• Rigole bouchée - Wakhinane 3 Zone A (2 min)</div>
+                        <div class="text-sm text-yellow-800">• Intrusion - Fann Résidence (5 min)</div>
+                    </div>
+                </div>
+            </div>
 
-            const rigolesData = [
-                { id: 1, zone: 'Plateau', quartier: 'Centre-ville', level: 85, status: 'critique', obstruction: true, debit: 12, couverture: 'ouverte', intrusion: false, lat: 14.6928, lng: -17.4467 },
-                { id: 2, zone: 'Plateau', quartier: 'Place Indépendance', level: 45, status: 'normal', obstruction: false, debit: 45, couverture: 'fermée', intrusion: false, lat: 14.6937, lng: -17.4441 },
-                { id: 3, zone: 'Plateau', quartier: 'Rue Carnot', level: 60, status: 'attention', obstruction: false, debit: 35, couverture: 'fermée', intrusion: false, lat: 14.6920, lng: -17.4450 },
-                { id: 4, zone: 'Plateau', quartier: 'Marché Kermel', level: 50, status: 'normal', obstruction: false, debit: 40, couverture: 'fermée', intrusion: false, lat: 14.6880, lng: -17.4460 },
-                { id: 5, zone: 'Plateau', quartier: 'Port de Dakar', level: 70, status: 'attention', obstruction: true, debit: 25, couverture: 'ouverte', intrusion: false, lat: 14.6850, lng: -17.4380 },
+            <!-- Carte des rigoles -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">📍 Rigoles surveillées</h2>
                 
-                { id: 6, zone: 'Médina', quartier: 'Tilène', level: 45, status: 'normal', obstruction: false, debit: 45, couverture: 'fermée', intrusion: false, lat: 14.6928, lng: -17.4567 },
-                { id: 7, zone: 'Médina', quartier: 'Gueule Tapée', level: 75, status: 'attention', obstruction: true, debit: 20, couverture: 'fermée', intrusion: false, lat: 14.6900, lng: -17.4580 },
-                { id: 8, zone: 'Médina', quartier: 'Fass', level: 40, status: 'normal', obstruction: false, debit: 48, couverture: 'fermée', intrusion: false, lat: 14.6950, lng: -17.4600 },
-                { id: 9, zone: 'Médina', quartier: 'Colobane', level: 65, status: 'attention', obstruction: false, debit: 30, couverture: 'ouverte', intrusion: false, lat: 14.6880, lng: -17.4620 },
-                { id: 10, zone: 'Médina', quartier: 'Rue 10', level: 55, status: 'normal', obstruction: false, debit: 42, couverture: 'fermée', intrusion: false, lat: 14.6910, lng: -17.4590 },
+                <div class="grid gap-4" id="rigolesList"></div>
                 
-                { id: 11, zone: 'HLM', quartier: 'Grand Yoff', level: 72, status: 'attention', obstruction: true, debit: 18, couverture: 'fermée', intrusion: true, lat: 14.7319, lng: -17.4572 },
-                { id: 12, zone: 'HLM', quartier: 'HLM 1', level: 50, status: 'normal', obstruction: false, debit: 40, couverture: 'fermée', intrusion: false, lat: 14.7350, lng: -17.4600 },
-                { id: 13, zone: 'HLM', quartier: 'HLM 2', level: 80, status: 'critique', obstruction: true, debit: 15, couverture: 'ouverte', intrusion: false, lat: 14.7380, lng: -17.4620 },
-                { id: 14, zone: 'HLM', quartier: 'HLM 3', level: 35, status: 'normal', obstruction: false, debit: 50, couverture: 'fermée', intrusion: false, lat: 14.7300, lng: -17.4550 },
-                { id: 15, zone: 'HLM', quartier: 'Patte Oie', level: 68, status: 'attention', obstruction: false, debit: 28, couverture: 'fermée', intrusion: false, lat: 14.7280, lng: -17.4590 },
-                
-                { id: 16, zone: 'Parcelles', quartier: 'Unité 10', level: 30, status: 'normal', obstruction: false, debit: 52, couverture: 'fermée', intrusion: false, lat: 14.7544, lng: -17.4394 },
-                { id: 17, zone: 'Parcelles', quartier: 'Unité 12', level: 60, status: 'attention', obstruction: false, debit: 35, couverture: 'ouverte', intrusion: false, lat: 14.7580, lng: -17.4420 },
-                { id: 18, zone: 'Parcelles', quartier: 'Unité 15', level: 40, status: 'normal', obstruction: false, debit: 47, couverture: 'fermée', intrusion: false, lat: 14.7600, lng: -17.4380 },
-                { id: 19, zone: 'Parcelles', quartier: 'Unité 20', level: 85, status: 'critique', obstruction: true, debit: 10, couverture: 'ouverte', intrusion: true, lat: 14.7520, lng: -17.4450 },
-                { id: 20, zone: 'Parcelles', quartier: 'Unité 25', level: 55, status: 'normal', obstruction: false, debit: 38, couverture: 'fermée', intrusion: false, lat: 14.7560, lng: -17.4400 },
-                
-                { id: 21, zone: 'Ouakam', quartier: 'Mermoz', level: 68, status: 'attention', obstruction: false, debit: 28, couverture: 'ouverte', intrusion: false, lat: 14.7167, lng: -17.4778 },
-                { id: 22, zone: 'Ouakam', quartier: 'Sacré Coeur', level: 45, status: 'normal', obstruction: false, debit: 45, couverture: 'fermée', intrusion: false, lat: 14.7200, lng: -17.4800 },
-                { id: 23, zone: 'Ouakam', quartier: 'Ngor', level: 75, status: 'attention', obstruction: true, debit: 22, couverture: 'fermée', intrusion: false, lat: 14.7400, lng: -17.5100 },
-                { id: 24, zone: 'Ouakam', quartier: 'Mamelles', level: 50, status: 'normal', obstruction: false, debit: 40, couverture: 'fermée', intrusion: false, lat: 14.7100, lng: -17.4900 },
-                { id: 25, zone: 'Ouakam', quartier: 'Almadies', level: 35, status: 'normal', obstruction: false, debit: 48, couverture: 'fermée', intrusion: false, lat: 14.7350, lng: -17.5200 },
-                
-                { id: 26, zone: 'Fann', quartier: 'Résidence', level: 90, status: 'critique', obstruction: true, debit: 8, couverture: 'ouverte', intrusion: true, lat: 14.6931, lng: -17.4572 },
-                { id: 27, zone: 'Fann', quartier: 'Point E', level: 60, status: 'attention', obstruction: false, debit: 30, couverture: 'fermée', intrusion: false, lat: 14.6950, lng: -17.4550 },
-                { id: 28, zone: 'Fann', quartier: 'Amitié', level: 40, status: 'normal', obstruction: false, debit: 46, couverture: 'fermée', intrusion: false, lat: 14.6900, lng: -17.4600 },
-                { id: 29, zone: 'Fann', quartier: 'Hock', level: 70, status: 'attention', obstruction: true, debit: 25, couverture: 'ouverte', intrusion: false, lat: 14.6880, lng: -17.4620 },
-                { id: 30, zone: 'Fann', quartier: 'Mermoz Pyrotechnie', level: 55, status: 'normal', obstruction: false, debit: 38, couverture: 'fermée', intrusion: false, lat: 14.6920, lng: -17.4580 },
-                
-                { id: 31, zone: 'Guédiawaye', quartier: 'Wakhinane 3 Zone A', level: 88, status: 'critique', obstruction: true, debit: 10, couverture: 'ouverte', intrusion: false, lat: 14.7800, lng: -17.4100 },
-                { id: 32, zone: 'Guédiawaye', quartier: 'Wakhinane 3 Zone B', level: 75, status: 'attention', obstruction: true, debit: 20, couverture: 'fermée', intrusion: true, lat: 14.7820, lng: -17.4120 },
-                { id: 33, zone: 'Guédiawaye', quartier: 'Wakhinane 3 Centre', level: 65, status: 'attention', obstruction: false, debit: 28, couverture: 'ouverte', intrusion: false, lat: 14.7850, lng: -17.4080 },
-                { id: 34, zone: 'Guédiawaye', quartier: 'Wakhinane 3 Marché', level: 45, status: 'normal', obstruction: false, debit: 42, couverture: 'fermée', intrusion: false, lat: 14.7780, lng: -17.4150 },
-                { id: 35, zone: 'Guédiawaye', quartier: 'Wakhinane 3 Mosquée', level: 70, status: 'attention', obstruction: false, debit: 30, couverture: 'fermée', intrusion: false, lat: 14.7830, lng: -17.4090 },
-            ];
+                <!-- Détails rigole sélectionnée -->
+                <div id="rigoleDetails" class="mt-6 bg-gray-50 rounded-lg p-6 hidden">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4" id="detailTitle"></h3>
+                    <div id="detailContent"></div>
+                </div>
+            </div>
 
-            const stats = {
-                totalRigoles: 156,
-                critiques: 8,
-                interventions: 12,
-                economies: '2.4M FCFA',
-                inondationsEvitees: 23,
-                obstructions: 15,
-                couverturesOuvertes: 9
-            };
+            <!-- Légende -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">💡 Légende des capteurs IoT</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-red-50 p-4 rounded-lg text-center">
+                        <div class="text-3xl mb-2">🚫</div>
+                        <div class="font-semibold text-red-900">Obstruction</div>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg text-center">
+                        <div class="text-3xl mb-2">⚠️</div>
+                        <div class="font-semibold text-purple-900">Intrusion</div>
+                    </div>
+                    <div class="bg-orange-50 p-4 rounded-lg text-center">
+                        <div class="text-3xl mb-2">🔓</div>
+                        <div class="font-semibold text-orange-900">Couverture</div>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg text-center">
+                        <div class="text-3xl mb-2">💧</div>
+                        <div class="font-semibold text-blue-900">Débit</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            useEffect(() => {
-                const timer = setTimeout(() => {
-                    setNotifications([
-                        { id: 1, message: 'Rigole bouchée - Wakhinane 3 Zone A', time: '2 min' },
-                        { id: 2, message: 'Intrusion - Fann Résidence', time: '5 min' },
-                        { id: 3, message: 'Niveau critique - Parcelles Unité 20', time: '8 min' },
-                    ]);
-                }, 2000);
-                return () => clearTimeout(timer);
-            }, []);
-
-            const getStatusColor = (status) => {
-                if (status === 'critique') return 'bg-red-500';
-                if (status === 'attention') return 'bg-orange-500';
-                return 'bg-green-500';
-            };
-
-            const getStatusText = (status) => {
-                if (status === 'critique') return 'Critique';
-                if (status === 'attention') return 'Attention';
-                return 'Normal';
-            };
-
-            const getDebitColor = (debit) => {
-                if (debit < 20) return 'text-red-600';
-                if (debit < 40) return 'text-orange-600';
-                return 'text-green-600';
-            };
-
-            const getDebitStatus = (debit) => {
-                if (debit < 20) return 'Très faible';
-                if (debit < 40) return 'Faible';
-                return 'Normal';
-            };
-
-            const zones = [...new Set(rigolesData.map(r => r.zone))];
-
-            return React.createElement('div', { className: 'min-h-screen bg-gradient-to-br from-blue-50 to-green-50' },
-                React.createElement('div', { className: 'bg-gradient-to-r from-blue-600 to-green-600 text-white p-6 shadow-lg' },
-                    React.createElement('div', { className: 'max-w-7xl mx-auto flex items-center gap-6' },
-                        React.createElement('img', { src: 'https://i.imgur.com/o973aKH.png', alt: 'Logo', className: 'w-20 h-20 object-contain rounded-lg' }),
-                        React.createElement('div', { className: 'flex-1' },
-                            React.createElement('h1', { className: 'text-3xl font-bold mb-2' }, 'SEN RIGOLE SMART'),
-                            React.createElement('p', { className: 'text-blue-100' }, '35 rigoles à Dakar et Guédiawaye')
-                        ),
-                        React.createElement('img', { src: 'https://i.imgur.com/o973aKH.png', alt: 'Logo', className: 'w-24 h-24 object-contain rounded-lg hidden md:block' })
-                    )
-                ),
-                React.createElement('div', { className: 'max-w-7xl mx-auto px-6 py-4' },
-                    React.createElement('div', { className: 'flex gap-4 bg-white p-2 rounded-lg shadow-md inline-flex' },
-                        React.createElement('button', { onClick: () => setUserType('citizen'), className: `px-6 py-2 rounded-md font-semibold transition ${userType === 'citizen' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'}` }, '👤 Vue Citoyen'),
-                        React.createElement('button', { onClick: () => setUserType('authority'), className: `px-6 py-2 rounded-md font-semibold transition ${userType === 'authority' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-600'}` }, '🏛️ Vue Autorités')
-                    )
-                ),
-                React.createElement('div', { className: 'max-w-7xl mx-auto px-6 pb-20' },
-                    userType === 'citizen' ? 
-                    React.createElement('div', { className: 'space-y-6' },
-                        notifications.length > 0 && React.createElement('div', { className: 'bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg shadow' },
-                            React.createElement('div', { className: 'flex items-start gap-3' },
-                                React.createElement('span', { className: 'text-2xl' }, '🔔'),
-                                React.createElement('div', { className: 'flex-1' },
-                                    React.createElement('h3', { className: 'font-semibold text-yellow-900 mb-2' }, 'Alertes'),
-                                    notifications.map(n => React.createElement('div', { key: n.id, className: 'text-sm text-yellow-800 mb-1' }, `• ${n.message} (${n.time})`))
-                                )
-                            )
-                        ),
-                        React.createElement('div', { className: 'bg-white rounded-xl shadow-lg p-6' },
-                            React.createElement('div', { className: 'flex items-center justify-between mb-4' },
-                                React.createElement('h2', { className: 'text-2xl font-bold text-gray-800' }, '📍 Carte des rigoles'),
-                                React.createElement('div', { className: 'flex gap-2' },
-                                    React.createElement('button', { onClick: () => setMapView('map'), className: `px-4 py-2 rounded-lg font-semibold transition ${mapView === 'map' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'}` }, '🗺️ Carte'),
-                                    React.createElement('button', { onClick: () => setMapView('list'), className: `px-4 py-2 rounded-lg font-semibold transition ${mapView === 'list' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'}` }, '📋 Liste')
-                                )
-                            ),
-                            mapView === 'map' ?
-                            React.createElement('div', { className: 'bg-gradient-to-br from-blue-100 to-green-100 rounded-lg p-4' },
-                                React.createElement('div', { className: 'text-center mb-4 font-semibold text-gray-700' }, '📍 Dakar et Guédiawaye'),
-                                React.createElement('div', { className: 'grid grid-cols-2 md:grid-cols-3 gap-3 mb-4' },
-                                    zones.map(zone => {
-                                        const zoneRigoles = rigolesData.filter(r => r.zone === zone);
-                                        const critiques = zoneRigoles.filter(r => r.status === 'critique').length;
-                                        return React.createElement('div', { key: zone, className: 'bg-white p-3 rounded-lg shadow' },
-                                            React.createElement('div', { className: 'font-semibold text-gray-800 text-sm' }, zone),
-                                            React.createElement('div', { className: 'text-xs text-gray-600 mt-1' }, `${zoneRigoles.length} rigoles`),
-                                            critiques > 0 && React.createElement('div', { className: 'text-xs text-red-600 font-semibold mt-1' }, `⚠️ ${critiques} critique(s)`)
-                                        );
-                                    })
-                                ),
-                                React.createElement('div', { className: 'max-h-80 overflow-y-auto space-y-2' },
-                                    rigolesData.map(r => React.createElement('button', { key: r.id, onClick: () => setSelectedRigole(r), className: `w-full p-3 rounded-lg shadow transition text-left ${selectedRigole?.id === r.id ? 'ring-2 ring-blue-400' : ''} ${r.status === 'critique' ? 'bg-red-50' : r.status === 'attention' ? 'bg-orange-50' : 'bg-green-50'}` },
-                                        React.createElement('div', { className: 'flex items-center justify-between' },
-                                            React.createElement('div', { className: 'flex items-center gap-2' },
-                                                React.createElement('div', { className: `w-3 h-3 rounded-full ${getStatusColor(r.status)} animate-pulse` }),
-                                                React.createElement('div', null,
-                                                    React.createElement('div', { className: 'font-semibold text-sm' }, `${r.zone} - ${r.quartier}`),
-                                                    React.createElement('div', { className: 'text-xs text-gray-600' }, `GPS: ${r.lat.toFixed(4)}°, ${r.lng.toFixed(4)}°`)
-                                                )
-                                            ),
-                                            React.createElement('div', { className: 'text-lg font-bold' }, `${r.level}%`)
-                                        )
-                                    ))
-                                )
-                            ) :
-                            React.createElement('div', { className: 'grid md:grid-cols-2 gap-6' },
-                                React.createElement('div', { className: 'space-y-3 max-h-96 overflow-y-auto' },
-                                    rigolesData.map(r => React.createElement('button', { key: r.id, onClick: () => setSelectedRigole(r), className: `w-full p-4 rounded-lg shadow transition text-left ${selectedRigole?.id === r.id ? 'ring-2 ring-blue-400' : ''} ${r.status === 'critique' ? 'bg-red-100' : r.status === 'attention' ? 'bg-orange-100' : 'bg-green-100'}` },
-                                        React.createElement('div', { className: 'flex items-center gap-2 mb-2' },
-                                            React.createElement('div', { className: `w-3 h-3 rounded-full ${getStatusColor(r.status)} animate-pulse` }),
-                                            React.createElement('span', { className: 'font-semibold text-sm' }, r.zone)
-                                        ),
-                                        React.createElement('div', { className: 'text-xs text-gray-600 mb-2' }, r.quartier),
-                                        React.createElement('div', { className: 'flex gap-1 mb-2' },
-                                            r.obstruction && React.createElement('span', { className: 'text-xs bg-red-500 text-white px-1 rounded' }, '🚫'),
-                                            r.intrusion && React.createElement('span', { className: 'text-xs bg-purple-500 text-white px-1 rounded' }, '⚠️'),
-                                            r.couverture === 'ouverte' && React.createElement('span', { className: 'text-xs bg-orange-500 text-white px-1 rounded' }, '🔓')
-                                        ),
-                                        React.createElement('div', { className: 'text-2xl font-bold' }, `${r.level}%`)
-                                    ))
-                                ),
-                                React.createElement('div', null,
-                                    selectedRigole ?
-                                    React.createElement('div', { className: 'bg-gray-50 rounded-lg p-6 sticky top-4' },
-                                        React.createElement('h3', { className: 'text-xl font-bold text-gray-800 mb-4' }, `📍 ${selectedRigole.zone} - ${selectedRigole.quartier}`),
-                                        React.createElement('div', { className: 'space-y-4' },
-                                            React.createElement('div', { className: 'bg-white p-4 rounded-lg' },
-                                                React.createElement('div', { className: 'flex items-center justify-between mb-2' },
-                                                    React.createElement('span', { className: 'text-gray-600' }, '💧 Niveau'),
-                                                    React.createElement('span', { className: `px-3 py-1 rounded-full text-white text-sm font-semibold ${getStatusColor(selectedRigole.status)}` }, getStatusText(selectedRigole.status))
-                                                ),
-                                                React.createElement('div', { className: 'w-full bg-gray-200 rounded-full h-6 overflow-hidden' },
-                                                    React.createElement('div', { className: `h-full ${getStatusColor(selectedRigole.status)} transition-all duration-500`, style: { width: `${selectedRigole.level}%` } })
-                                                ),
-                                                React.createElement('div', { className: 'text-right mt-1 text-2xl font-bold text-gray-800' }, `${selectedRigole.level}%`)
-                                            ),
-                                            React.createElement('div', { className: 'bg-white p-4 rounded-lg' },
-                                                React.createElement('div', { className: 'text-gray-600 mb-2' }, '⚡ Débit'),
-                                                React.createElement('div', { className: 'flex items-center justify-between' },
-                                                    React.createElement('div', { className: `text-2xl font-bold ${getDebitColor(selectedRigole.debit)}` }, `${selectedRigole.debit} L/s`),
-                                                    React.createElement('div', { className: `text-sm font-semibold ${getDebitColor(selectedRigole.debit)}` }, getDebitStatus(selectedRigole.debit))
-                                                )
-                                            ),
-                                            React.createElement('div', { className: 'bg-white p-4 rounded-lg' },
-                                                React.createElement('div', { className: 'text-gray-600 mb-2' }, '📍 GPS'),
-                                                React.createElement('div', { className: 'text-sm font-mono text-blue-600' }, `${selectedRigole.lat.toFixed(6)}°N, ${selectedRigole.lng.toFixed(6)}°W`)
-                                            ),
-                                            React.createElement('div', { className: 'grid grid-cols-2 gap-3' },
-                                                React.createElement('div', { className: `p-4 rounded-lg ${selectedRigole.obstruction ? 'bg-red-50 border-2 border-red-300' : 'bg-green-50 border-2 border-green-300'}` },
-                                                    React.createElement('div', { className: 'text-2xl mb-1' }, selectedRigole.obstruction ? '🚫' : '✅'),
-                                                    React.createElement('div', { className: 'text-sm font-semibold text-gray-700' }, 'Obstruction'),
-                                                    React.createElement('div', { className: `text-xs mt-1 font-semibold ${selectedRigole.obstruction ? 'text-red-600' : 'text-green-600'}` }, selectedRigole.obstruction ? 'Détectée' : 'Aucune')
-                                                ),
-                                                React.createElement('div', { className: `p-4 rounded-lg ${selectedRigole.couverture === 'ouverte' ? 'bg-orange-50 border-2 border-orange-300' : 'bg-green-50 border-2 border-green-300'}` },
-                                                    React.createElement('div', { className: 'text-2xl mb-1' }, selectedRigole.couverture === 'ouverte' ? '🔓' : '🔒'),
-                                                    React.createElement('div', { className: 'text-sm font-semibold text-gray-700' }, 'Couverture'),
-                                                    React.createElement('div', { className: `text-xs mt-1 font-semibold ${selectedRigole.couverture === 'ouverte' ? 'text-orange-600' : 'text-green-600'}` }, selectedRigole.couverture === 'ouverte' ? 'Ouverte' : 'Fermée')
-                                                )
-                                            ),
-                                            selectedRigole.intrusion && React.createElement('div', { className: 'bg-purple-50 border-2 border-purple-300 p-4 rounded-lg' },
-                                                React.createElement('div', { className: 'font-semibold text-purple-900 mb-2' }, '🛡️ Intrusion détectée'),
-                                                React.createElement('div', { className: 'text-sm text-purple-700' }, 'Activité inhabituelle.')
-                                            )
-                                        )
-                                    ) :
-                                    React.createElement('div', { className: 'bg-gray-50 rounded-lg p-6 h-full flex items-center justify-center text-gray-500' }, 'Cliquez sur une rigole')
-                                )
-                            )
-                        )
-                    ) :
-                    React.createElement('div', { className: 'space-y-6' },
-                        React
+    <!-- Vue Autorités -->
+    <div id="viewAuthority" class="max-w-7xl mx-auto px-6 pb-20 hidden">
+        <div class="space-y-6">
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                <div class="bg-white rounded-lg shadow-lg p-4">
+                    <div class="text-2xl mb-2">📊</div>
+                    <div class="text-gray-600
