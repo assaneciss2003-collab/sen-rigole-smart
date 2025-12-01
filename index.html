@@ -32,4 +32,54 @@
 
     <div class="max-w-7xl mx-auto px-6 py-4">
         <div class="flex gap-4 bg-white p-2 rounded-lg shadow inline-flex">
-            <button onclick="showCitizen()" id="btnCitizen" class="px-6 py-2 rounded-m
+            <button onclick="showCitizen()" id="btnCitizen" class="px-6 py-2 rounded-md font-semibold bg-blue-600 text-white">👤 Vue Citoyen</button>
+            <button onclick="showAuthority()" id="btnAuthority" class="px-6 py-2 rounded-md font-semibold bg-gray-100 text-gray-600">🏛️ Vue Autorités</button>
+        </div>
+    </div>
+
+    <div id="viewCitizen" class="max-w-7xl mx-auto px-6 pb-20">
+        <button onclick="openSignalementModal()" class="fixed bottom-8 right-8 bg-red-600 text-white px-6 py-4 rounded-full shadow-2xl hover:bg-red-700 transition z-50 flex items-center gap-2 font-bold">📸 Signaler</button>
+        
+        <div class="space-y-6">
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg shadow">
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">🔔</span>
+                    <div>
+                        <h3 class="font-semibold text-yellow-900 mb-2">Alertes dans votre zone</h3>
+                        <div class="text-sm text-yellow-800">• Rigole bouchée - Wakhinane 3 Zone A (2 min)</div>
+                        <div class="text-sm text-yellow-800">• Intrusion - Fann Résidence (5 min)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">📍 Rigoles surveillées</h2>
+                <div class="mb-4 space-y-3">
+                    <input type="text" id="searchInput" placeholder="🔍 Rechercher par zone ou quartier..." class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none" onkeyup="filterRigoles()"/>
+                    <div class="flex gap-2 flex-wrap">
+                        <button onclick="setFilter('tous')" id="filterTous" class="px-4 py-2 rounded-lg font-semibold bg-blue-600 text-white">Tous (35)</button>
+                        <button onclick="setFilter('critique')" id="filterCritique" class="px-4 py-2 rounded-lg font-semibold bg-gray-100 text-gray-600">🔴 Critiques</button>
+                        <button onclick="setFilter('attention')" id="filterAttention" class="px-4 py-2 rounded-lg font-semibold bg-gray-100 text-gray-600">🟠 Attention</button>
+                        <button onclick="setFilter('normal')" id="filterNormal" class="px-4 py-2 rounded-lg font-semibold bg-gray-100 text-gray-600">🟢 Normaux</button>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-3 max-h-96 overflow-y-auto" id="rigolesList"></div>
+                    <div id="rigoleDetails" class="bg-gray-50 rounded-lg p-6 hidden sticky top-0">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4" id="detailTitle"></h3>
+                        <div id="detailContent"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">💡 Légende des capteurs IoT</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-red-50 p-4 rounded-lg text-center"><div class="text-3xl mb-2">🚫</div><div class="font-semibold text-red-900">Obstruction</div></div>
+                    <div class="bg-purple-50 p-4 rounded-lg text-center"><div class="text-3xl mb-2">⚠️</div><div class="font-semibold text-purple-900">Intrusion</div></div>
+                    <div class="bg-orange-50 p-4 rounded-lg text-center"><div class="text-3xl mb-2">🔓</div><div class="font-semibold text-orange-900">Couverture</div></div>
+                    <div class="bg-blue-50 p-4 rounded-lg text-center"><div class="text-3xl mb-2">💧</div><div class="font-semibold text-blue-900">Débit</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
