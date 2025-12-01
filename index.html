@@ -20,7 +20,6 @@
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-green-50">
     
-    <!-- Header -->
     <header class="bg-gradient-to-r from-blue-600 to-green-600 text-white p-6 shadow-lg">
         <div class="max-w-7xl mx-auto flex items-center gap-6">
             <img src="https://i.imgur.com/o973aKH.png" alt="Logo" class="w-20 h-20 rounded-lg">
@@ -31,7 +30,6 @@
         </div>
     </header>
 
-    <!-- Vue Toggle -->
     <div class="max-w-7xl mx-auto px-6 py-4">
         <div class="flex gap-4 bg-white p-2 rounded-lg shadow inline-flex">
             <button onclick="showCitizen()" id="btnCitizen" class="px-6 py-2 rounded-md font-semibold bg-blue-600 text-white">
@@ -43,11 +41,9 @@
         </div>
     </div>
 
-    <!-- Vue Citoyen -->
     <div id="viewCitizen" class="max-w-7xl mx-auto px-6 pb-20">
         <div class="space-y-6">
             
-            <!-- Alertes -->
             <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg shadow">
                 <div class="flex items-start gap-3">
                     <span class="text-2xl">🔔</span>
@@ -59,51 +55,44 @@
                 </div>
             </div>
             
-            <<!-- Carte des rigoles -->
-<div class="bg-white rounded-xl shadow-lg p-6">
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">📍 Rigoles surveillées</h2>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">📍 Rigoles surveillées</h2>
 
-<!-- Barre de recherche et filtres -->
-<div class="mb-4 space-y-3">
-    <!-- Recherche -->
-    <input 
-        type="text" 
-        id="searchInput" 
-        placeholder="🔍 Rechercher par zone ou quartier..." 
-        class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none"
-        onkeyup="filterRigoles()"
-    />
-    
-    <!-- Filtres -->
-    <div class="flex gap-2 flex-wrap">
-        <button onclick="setFilter('tous')" id="filterTous" class="px-4 py-2 rounded-lg font-semibold bg-blue-600 text-white">
-            Tous (35)
-        </button>
-        <button onclick="setFilter('critique')" id="filterCritique" class="px-4 py-2 rounded-lg font-semibold bg-gray-100 text-gray-600">
-            🔴 Critiques
-        </button>
-        <button onclick="setFilter('attention')" id="filterAttention" class="px-4 py-2 rounded-lg font-semibold bg-gray-100 text-gray-600">
-            🟠 Attention
-        </button>
-        <button onclick="setFilter('normal')" id="filterNormal" class="px-4 py-2 rounded-lg font-semibold bg-gray-100 text-gray-600">
-            🟢 Normaux
-        </button>
-    </div>
-</div>
-    
-    <div class="grid md:grid-cols-2 gap-6">
-        <!-- Liste des rigoles -->
-        <div class="space-y-3 max-h-96 overflow-y-auto" id="rigolesList"></div>
-        
-        <!-- Détails rigole sélectionnée -->
-        <div id="rigoleDetails" class="bg-gray-50 rounded-lg p-6 hidden sticky top-0">
-            <h3 class="text-xl font-bold text-gray-800 mb-4" id="detailTitle"></h3>
-            <div id="detailContent"></div>
-        </div>
-    </div>
-</div>
+                <div class="mb-4 space-y-3">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="🔍 Rechercher par zone ou quartier..." 
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none"
+                        onkeyup="filterRigoles()"
+                    />
+                    
+                    <div class="flex gap-2 flex-wrap">
+                        <button onclick="setFilter('tous')" id="filterTous" class="px-4 py-2 rounded-lg font-semibold bg-blue-600 text-white">
+                            Tous (35)
+                        </button>
+                        <button onclick="setFilter('critique')" id="filterCritique" class="px-4 py-2 rounded-lg font-semibold bg-gray-100 text-gray-600">
+                            🔴 Critiques
+                        </button>
+                        <button onclick="setFilter('attention')" id="filterAttention" class="px-4 py-2 rounded-lg font-semibold bg-gray-100 text-gray-600">
+                            🟠 Attention
+                        </button>
+                        <button onclick="setFilter('normal')" id="filterNormal" class="px-4 py-2 rounded-lg font-semibold bg-gray-100 text-gray-600">
+                            🟢 Normaux
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-3 max-h-96 overflow-y-auto" id="rigolesList"></div>
+                    
+                    <div id="rigoleDetails" class="bg-gray-50 rounded-lg p-6 hidden sticky top-0">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4" id="detailTitle"></h3>
+                        <div id="detailContent"></div>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Légende -->
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <h3 class="text-xl font-bold text-gray-800 mb-4">💡 Légende des capteurs IoT</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -128,11 +117,9 @@
         </div>
     </div>
 
-    <!-- Vue Autorités -->
     <div id="viewAuthority" class="max-w-7xl mx-auto px-6 pb-20 hidden">
         <div class="space-y-6">
             
-            <!-- Stats -->
             <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
                 <div class="bg-white rounded-lg shadow-lg p-4">
                     <div class="text-2xl mb-2">📊</div>
@@ -166,7 +153,6 @@
                 </div>
             </div>
 
-            <!-- Interventions -->
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">🚨 Interventions prioritaires</h2>
                 <div id="interventionsList"></div>
@@ -174,7 +160,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="bg-gray-800 text-white py-6 mt-12">
         <div class="max-w-7xl mx-auto px-6 text-center">
             <p class="text-sm text-gray-400">SEN RIGOLE SMART © 2025 | 35 rigoles surveillées</p>
@@ -220,79 +205,72 @@
             {id:35,zone:'Guédiawaye',quartier:'Wakhinane 3 Mosquée',level:70,status:'attention',obstruction:false,debit:30,couverture:'fermée',lat:14.7830,lng:-17.4090}
         ];
 
+        let currentFilter = 'tous';
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.getElementById('filterTous').className = 'px-4 py-2 rounded-lg font-semibold ' + (filter === 'tous' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600');
+            document.getElementById('filterCritique').className = 'px-4 py-2 rounded-lg font-semibold ' + (filter === 'critique' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-600');
+            document.getElementById('filterAttention').className = 'px-4 py-2 rounded-lg font-semibold ' + (filter === 'attention' ? 'bg-orange-600 text-white' : 'bg-gray-100 text-gray-600');
+            document.getElementById('filterNormal').className = 'px-4 py-2 rounded-lg font-semibold ' + (filter === 'normal' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-600');
+            filterRigoles();
+        }
+
+        function filterRigoles() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = rigoles;
+            
+            if (currentFilter !== 'tous') {
+                filtered = filtered.filter(r => r.status === currentFilter);
+            }
+            
+            if (searchTerm) {
+                filtered = filtered.filter(r => r.zone.toLowerCase().includes(searchTerm) || r.quartier.toLowerCase().includes(searchTerm));
+            }
+            
+            const counts = {
+                tous: rigoles.length,
+                critique: rigoles.filter(r => r.status === 'critique').length,
+                attention: rigoles.filter(r => r.status === 'attention').length,
+                normal: rigoles.filter(r => r.status === 'normal').length
+            };
+            
+            document.getElementById('filterTous').innerHTML = 'Tous (' + counts.tous + ')';
+            document.getElementById('filterCritique').innerHTML = '🔴 Critiques (' + counts.critique + ')';
+            document.getElementById('filterAttention').innerHTML = '🟠 Attention (' + counts.attention + ')';
+            document.getElementById('filterNormal').innerHTML = '🟢 Normaux (' + counts.normal + ')';
+            
+            renderFilteredRigoles(filtered);
+        }
+
+        function renderFilteredRigoles(filtered) {
+            const list = document.getElementById('rigolesList');
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="text-center text-gray-500 py-8">Aucune rigole trouvée</div>';
+                return;
+            }
+            
+            list.innerHTML = filtered.map(r => 
+                '<div class="rigole-card status-' + r.status + ' p-4 rounded-lg" onclick="showDetails(' + r.id + ')">' +
+                    '<div class="flex justify-between items-start">' +
+                        '<div>' +
+                            '<div class="font-bold text-gray-800">' + r.zone + ' - ' + r.quartier + '</div>' +
+                            '<div class="text-sm text-gray-600 mt-1">GPS: ' + r.lat.toFixed(4) + '°, ' + r.lng.toFixed(4) + '°</div>' +
+                            '<div class="flex gap-1 mt-2">' +
+                                (r.obstruction ? '<span class="text-xs bg-red-500 text-white px-2 py-1 rounded">🚫</span>' : '') +
+                                (r.intrusion ? '<span class="text-xs bg-purple-500 text-white px-2 py-1 rounded">⚠️</span>' : '') +
+                                (r.couverture === 'ouverte' ? '<span class="text-xs bg-orange-500 text-white px-2 py-1 rounded">🔓</span>' : '') +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="text-3xl font-bold text-gray-800">' + r.level + '%</div>' +
+                    '</div>' +
+                '</div>'
+            ).join('');
+        }
+
         function renderRigoles() {
-            let currentFilter = 'tous';
-
-function setFilter(filter) {
-    currentFilter = filter;
-    
-    document.getElementById('filterTous').className = 'px-4 py-2 rounded-lg font-semibold ' + (filter === 'tous' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600');
-    document.getElementById('filterCritique').className = 'px-4 py-2 rounded-lg font-semibold ' + (filter === 'critique' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-600');
-    document.getElementById('filterAttention').className = 'px-4 py-2 rounded-lg font-semibold ' + (filter === 'attention' ? 'bg-orange-600 text-white' : 'bg-gray-100 text-gray-600');
-    document.getElementById('filterNormal').className = 'px-4 py-2 rounded-lg font-semibold ' + (filter === 'normal' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-600');
-    
-    filterRigoles();
-}
-
-function filterRigoles() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    let filtered = rigoles;
-    
-    if (currentFilter !== 'tous') {
-        filtered = filtered.filter(r => r.status === currentFilter);
-    }
-    
-    if (searchTerm) {
-        filtered = filtered.filter(r => 
-            r.zone.toLowerCase().includes(searchTerm) || 
-            r.quartier.toLowerCase().includes(searchTerm)
-        );
-    }
-    
-    const counts = {
-        tous: rigoles.length,
-        critique: rigoles.filter(r => r.status === 'critique').length,
-        attention: rigoles.filter(r => r.status === 'attention').length,
-        normal: rigoles.filter(r => r.status === 'normal').length
-    };
-    
-    document.getElementById('filterTous').innerHTML = `Tous (${counts.tous})`;
-    document.getElementById('filterCritique').innerHTML = `🔴 Critiques (${counts.critique})`;
-    document.getElementById('filterAttention').innerHTML = `🟠 Attention (${counts.attention})`;
-    document.getElementById('filterNormal').innerHTML = `🟢 Normaux (${counts.normal})`;
-    
-    renderFilteredRigoles(filtered);
-}
-
-function renderFilteredRigoles(filtered) {
-    const list = document.getElementById('rigolesList');
-    if (filtered.length === 0) {
-        list.innerHTML = '<div class="text-center text-gray-500 py-8">Aucune rigole trouvée</div>';
-        return;
-    }
-    
-    list.innerHTML = filtered.map(r => `
-        <div class="rigole-card status-${r.status} p-4 rounded-lg" onclick="showDetails(${r.id})">
-            <div class="flex justify-between items-start">
-                <div>
-                    <div class="font-bold text-gray-800">${r.zone} - ${r.quartier}</div>
-                    <div class="text-sm text-gray-600 mt-1">GPS: ${r.lat.toFixed(4)}°, ${r.lng.toFixed(4)}°</div>
-                    <div class="flex gap-1 mt-2">
-                        ${r.obstruction ? '<span class="text-xs bg-red-500 text-white px-2 py-1 rounded">🚫</span>' : ''}
-                        ${r.intrusion ? '<span class="text-xs bg-purple-500 text-white px-2 py-1 rounded">⚠️</span>' : ''}
-                        ${r.couverture === 'ouverte' ? '<span class="text-xs bg-orange-500 text-white px-2 py-1 rounded">🔓</span>' : ''}
-                    </div>
-                </div>
-                <div class="text-3xl font-bold text-gray-800">${r.level}%</div>
-            </div>
-        </div>
-    `).join('');
-}
-
-function renderRigoles() {
-    filterRigoles();
-}                                    
-          }
+            filterRigoles();
+        }
 
         function showDetails(id) {
             const r = rigoles.find(rig => rig.id === id);
@@ -300,40 +278,39 @@ function renderRigoles() {
             const title = document.getElementById('detailTitle');
             const content = document.getElementById('detailContent');
             
-            title.textContent = `${r.zone} - ${r.quartier}`;
-            content.innerHTML = `
-                <div class="space-y-4">
-                    <div class="bg-white p-4 rounded-lg">
-                        <div class="text-gray-600 mb-2">💧 Niveau d'eau</div>
-                        <div class="w-full bg-gray-200 rounded-full h-6">
-                            <div class="bg-${r.status === 'critique' ? 'red' : r.status === 'attention' ? 'orange' : 'green'}-500 h-6 rounded-full" style="width: ${r.level}%"></div>
-                        </div>
-                        <div class="text-right text-2xl font-bold mt-2">${r.level}%</div>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg">
-                        <div class="text-gray-600 mb-2">⚡ Débit: ${r.debit} L/s</div>
-                        <div class="text-gray-600">📍 GPS: ${r.lat.toFixed(6)}°N, ${r.lng.toFixed(6)}°W</div>
-                        <div class="text-gray-600 mt-2">🔒 Couverture: ${r.couverture}</div>
-                        <div class="text-gray-600">🚫 Obstruction: ${r.obstruction ? 'Oui' : 'Non'}</div>
-                    </div>
-                </div>
-            `;
+            title.textContent = r.zone + ' - ' + r.quartier;
+            content.innerHTML = 
+                '<div class="space-y-4">' +
+                    '<div class="bg-white p-4 rounded-lg">' +
+                        '<div class="text-gray-600 mb-2">💧 Niveau d\'eau</div>' +
+                        '<div class="w-full bg-gray-200 rounded-full h-6">' +
+                            '<div class="bg-' + (r.status === 'critique' ? 'red' : r.status === 'attention' ? 'orange' : 'green') + '-500 h-6 rounded-full" style="width: ' + r.level + '%"></div>' +
+                        '</div>' +
+                        '<div class="text-right text-2xl font-bold mt-2">' + r.level + '%</div>' +
+                    '</div>' +
+                    '<div class="bg-white p-4 rounded-lg">' +
+                        '<div class="text-gray-600 mb-2">⚡ Débit: ' + r.debit + ' L/s</div>' +
+                        '<div class="text-gray-600">📍 GPS: ' + r.lat.toFixed(6) + '°N, ' + r.lng.toFixed(6) + '°W</div>' +
+                        '<div class="text-gray-600 mt-2">🔒 Couverture: ' + r.couverture + '</div>' +
+                        '<div class="text-gray-600">🚫 Obstruction: ' + (r.obstruction ? 'Oui' : 'Non') + '</div>' +
+                    '</div>' +
+                '</div>';
             details.classList.remove('hidden');
         }
 
         function renderInterventions() {
             const list = document.getElementById('interventionsList');
             const critiques = rigoles.filter(r => r.status === 'critique' || r.obstruction || r.intrusion);
-            list.innerHTML = critiques.map(r => `
-                <div class="status-${r.status} p-4 rounded-lg mb-3">
-                    <div class="font-semibold text-gray-900">${r.zone} - ${r.quartier}</div>
-                    <div class="text-sm text-gray-700 mt-1">Niveau: ${r.level}% | Débit: ${r.debit} L/s</div>
-                    <div class="flex gap-2 mt-2">
-                        ${r.obstruction ? '<span class="text-xs bg-red-500 text-white px-2 py-1 rounded">🚫 Bouchée</span>' : ''}
-                        ${r.intrusion ? '<span class="text-xs bg-purple-500 text-white px-2 py-1 rounded">⚠️ Intrusion</span>' : ''}
-                    </div>
-                </div>
-            `).join('');
+            list.innerHTML = critiques.map(r => 
+                '<div class="status-' + r.status + ' p-4 rounded-lg mb-3">' +
+                    '<div class="font-semibold text-gray-900">' + r.zone + ' - ' + r.quartier + '</div>' +
+                    '<div class="text-sm text-gray-700 mt-1">Niveau: ' + r.level + '% | Débit: ' + r.debit + ' L/s</div>' +
+                    '<div class="flex gap-2 mt-2">' +
+                        (r.obstruction ? '<span class="text-xs bg-red-500 text-white px-2 py-1 rounded">🚫 Bouchée</span>' : '') +
+                        (r.intrusion ? '<span class="text-xs bg-purple-500 text-white px-2 py-1 rounded">⚠️ Intrusion</span>' : '') +
+                    '</div>' +
+                '</div>'
+            ).join('');
         }
 
         function showCitizen() {
