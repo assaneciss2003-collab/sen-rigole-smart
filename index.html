@@ -442,5 +442,37 @@
             navigator.serviceWorker.register('service-worker.js').catch(e => console.log('SW:', e));
         }
     </script>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAfzDzkY7Jluo-3NtZQVpBuR3FXPH-7CAc",
+    authDomain: "sen-rigole-smart.firebaseapp.com",
+    databaseURL: "https://sen-rigole-smart-default-rtdb.firebaseio.com",
+    projectId: "sen-rigole-smart",
+    storageBucket: "sen-rigole-smart.firebasestorage.app",
+    messagingSenderId: "483868044190",
+    appId: "1:483868044190:web:af768502e5b2b5a742c48f",
+    measurementId: "G-D70BJDP4EW"
+  };
+
+  // 🔥 1. Initialisation Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // 🔥 2. Lecture temps réel sur rigole 1
+  const rigoleRef = ref(db, "rigoles/rigole1");
+
+  onValue(rigoleRef, (snapshot) => {
+    const data = snapshot.val();
+    console.log("🔥 Données Firebase :", data);
+
+    // 🔥 3. Mise à jour de l’interface (tu peux modifier comme tu veux)
+    if (window.updateRigole) {
+      window.updateRigole(data);
+    }
+  });
+</script>
 </body>
 </html>
